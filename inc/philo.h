@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 11:01:38 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/11 13:17:29 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 /* threads and mutexes missing in the structures yet */
 typedef struct s_fork
 {
+	int				id;
 	int				state;
 	pthread_mutex_t	mutex_fork;
 }		t_fork;
@@ -43,7 +44,8 @@ typedef struct s_philo
 	int		shift;
 	int		state;
 	double	lapsed_lunch;
-	t_fork	forks;
+	t_fork	l_fork;
+	t_fork	r_fork;
 }			t_philo;
 
 typedef struct s_data
@@ -53,12 +55,12 @@ typedef struct s_data
 	useconds_t	t_eat;
 	useconds_t	t_sleep;
 	int			n_lunch;
-	t_fork		*fork;
-	t_philo		*philo;
+	t_fork		**fork;
+	t_philo		**philo;
 }			t_data;
 
-void	alloc(t_data *data);
 void	forks_init(t_data *data);
+void	forks_destroy(t_data *data);
 void	data_init(t_data *data, char **argv);
 int		ft_atoi(const char *str);
 void	ft_putchar_fd(char c, int fd);
