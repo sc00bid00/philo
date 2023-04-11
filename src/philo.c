@@ -6,93 +6,111 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 09:23:07 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 16:47:53 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/11 18:53:21 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/time.h>
 
-void	ft_wait(useconds_t	t)
+# define N 4
+# define THINK_TIME 3
+# define EAT_TIME 3
+
+typedef struct	s_data
 {
-	while ((double)t * 2  > 1)
-	{
-		usleep(500);
-		t -= (double)(500 / 1000);
-	}
-	usleep(t);
-}
+	pthread_mutex_t	*m;
+	pthread_t		*p;
+	pthread_mutex_t	w;
+	int				id;
+}					t_data;
 
-useconds_t	putmsg(int id, char *msg)
+void	think(int id, t_data d)
 {
 	struct timeval	ti;
 	useconds_t		t;
 
+	pthread_mutex_lock(&d.w);
 	gettimeofday(&ti, NULL);
-	t = 1000 * ti.tv_sec + ti.tv_usec / 1000;
-	ft_putnbr_fd(t, 1);
-	ft_putchar_fd(' ', 1);
-	ft_putnbr_fd(id, 1);
-	ft_putstr_fd(" is ", 1);
-	ft_putendl_fd(msg, 1);
-	return (t);
+	t = ti.tv_sec + ti.tv_usec / 1000;
+	pthread_mutex_unlock(&d.w);
+	printf("[%d] Philosopher %d is thinking\n", (int)t, id);
+	sleep(THINK_TIME);
 }
 
-void	*routine(void *p)
+void	eat(int id, int	lf, int rf, t_data d)
 {
-	t_philo		*philo;
-	useconds_t	t;
+	struct timeval	ti;
+	useconds_t		t;
 
+	pthread_mutex_lock(&d.w);
+	gettimeofday(&ti, NULL);
+	t = ti.tv_sec + ti.tv_usec / 1000;
+	pthread_mutex_unlock(&d.w);
+	pthread_mutex_lock(&d.m[lf]);
+	pthread_mutex_lock(&d.m[rf]);
+	printf("[%d] Philosopher %d is eating with forks %d and %d\n", (int)t, id, lf, rf);
+	sleep(EAT_TIME);
+	pthread_mutex_unlock(&d.m[lf]);
+	pthread_mutex_unlock(&d.m[rf]);
+}
 
-	philo = (t_philo *)p;
-	if (philo->doing & EATING)
+void	*func(void *arg)
+{
+	t_data	d;
+	int		id;
+	int		lf;
+	int		rf;
+
+	d = *(t_data *)arg;
+	id = d.id;
+	lf = id;
+	rf = (id + 1) % N;
+	if (id % 2 && id + 1 != N)
 	{
-		if (!pthread_mutex_lock(philo->data->forks[philo->lfork]))
-			putmsg(philo->id, "took a fork");
-		if (!pthread_mutex_lock(philo->data->forks[philo->rfork]))
-			t = putmsg(philo->id, "took a fork");
-		philo->lapsed_lunch = t;
-		putmsg(philo->id, "eating");
-		ft_wait(philo->data->t_eat);
-		pthread_mutex_unlock(philo->data->forks[philo->rfork]);
-		pthread_mutex_unlock(philo->data->forks[philo->lfork]);
-		philo->doing = philo->doing<< 1;
+		eat(d.id + 1, lf, rf, d);
+		think(d.id + 1, d);
 	}
-	else if (philo->doing & SLEEPING)
+	else if(id + 1 == N || !(id % 2))
 	{
-		putmsg(philo->id, "sleeping");
-		ft_wait(philo->data->t_sleep);
-		philo->doing = philo->doing<< 1;
-	}
-	else if (philo->doing & THINKING)
-	{
-		putmsg(philo->id, "thinking");
-		philo->doing = philo->doing<< 1;
+		think(d.id + 1, d);
+		eat(d.id + 1, lf, rf, d);
 	}
 	return (NULL);
 }
 
-int	main(int argc, char **argv)
+int	main(void)
 {
-	t_data	*data;
-	int		i;
+	t_data	d;
 
-	data = malloc(sizeof(t_data));
-	if (argc > 7 || argc < 6)
+	d.m = malloc(N * sizeof(pthread_mutex_t));
+	d.p = malloc(N * sizeof(pthread_t));
+	d.id = 0;
+	while (d.id < N)
 	{
-		printf("Wrong arguments - usage:\nnumber_of_philosophers\n\
-time_to_die   [ms]\ntime_to_eat   [ms]\ntime_to_sleep [ms]\n\
-[number_of_times_each_philosopher_must_eat]\n");
-		return (1);
+		pthread_mutex_init(&d.m[d.id], NULL);
+		d.id++;
 	}
-	data_init(data, argv);
-	mutex_init(data);
-	i = 0;
-	while (i < data->n_philo)
+	d.id = 0;
+	while (d.id < N)
 	{
-		pthread_create((void *)&data->philo[i]->thread, NULL, &routine, (void *)data->philo[i]);
-		i++;
+		pthread_create(&d.p[d.id], NULL, func, &d);
+		d.id++;
 	}
-	mutex_destroy(data);
-	data_cleanup(data);
-	return (0);
-}
+	d.id = 0;
+	while (d.id < N)
+	{
+		pthread_join(d.p[d.id], NULL);
+		d.id++;
+	}
+	d.id = 0;
+	while (d.id < N)
+	{
+		pthread_mutex_destroy(&d.m[d.id]);
+		d.id++;
+	}
+		return (0);
+	}
