@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 09:23:07 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 16:28:50 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/11 16:47:53 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	*routine(void *p)
 
 
 	philo = (t_philo *)p;
-	t = 0;
 	if (philo->doing & EATING)
 	{
 		if (!pthread_mutex_lock(philo->data->forks[philo->lfork]))
@@ -90,7 +89,7 @@ time_to_die   [ms]\ntime_to_eat   [ms]\ntime_to_sleep [ms]\n\
 	i = 0;
 	while (i < data->n_philo)
 	{
-		pthread_create((void *)data->philo[i]->thread, NULL, &routine, (void *)data->philo[i]);
+		pthread_create((void *)&data->philo[i]->thread, NULL, &routine, (void *)data->philo[i]);
 		i++;
 	}
 	mutex_destroy(data);

@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 16:31:16 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/11 16:42:39 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_philo
 	int			lfork;
 	int			rfork;
 	int			forks;
-	pthread_t	*thread;
+	pthread_t	thread;
 	t_data		*data;
 	useconds_t	lapsed_lunch;
 }				t_philo;
