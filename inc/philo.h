@@ -6,12 +6,17 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 16:42:39 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/12 19:26:58 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define ERR_ARGS 1
+# define ERR_SOLITARY 2
+
+# define T_SLOT 50000
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -21,47 +26,51 @@
 # include <pthread.h>
 # include <philo.h>
 
-# define DEAD		0b000
-# define THINKING	0b001
-# define EATING		0b010
-# define SLEEPING	0b100
-
-/* threads and mutexes missing in the structures yet */
-typedef struct s_data
+typedef struct	s_data
 {
-	int				n_philo;
-	useconds_t		clock;
-	useconds_t		t_die;
-	useconds_t		t_eat;
-	useconds_t		t_sleep;
-	int				n_lunch;
-	struct s_philo	**philo;
-	pthread_mutex_t	**forks;
+	int				n_phi;
+	unsigned long	t_die;
+	unsigned long	t_eat;
+	unsigned long	t_slp;
+	unsigned long	t_start;
+	int				n_lun;
+	int				stop;
+	pthread_mutex_t	p_lock;
+	pthread_mutex_t	lock;
+	pthread_mutex_t	*forks;
+	pthread_t		*thread;
+	struct s_philo	*philo;
 }					t_data;
 
 typedef struct s_philo
 {
-	int			id;
-	int			shift;
-	int			doing;
-	int			lfork;
-	int			rfork;
-	int			forks;
-	pthread_t	thread;
-	t_data		*data;
-	useconds_t	lapsed_lunch;
-}				t_philo;
+	int				id;
+	int				lf;
+	int				rf;
+	unsigned long	t_die;
+	unsigned long	t_eat;
+	unsigned long	t_slp;
+	unsigned long	t_last;
+	int				n_lun;
+	int				alive;
+	t_data			*data;
+}					t_philo;
 
-void	data_init(t_data *data, char **argv);
-void	data_cleanup(t_data *data);
-void	mutex_init(t_data *data);
-void	mutex_destroy(t_data *data);
-int		ft_atoi(const char *str);
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_putnbr_fd(int n, int fd);
-void	tmp_prtarray(char **arr);
-void	tmp_prtdata(t_data	*data);
+void	*function(void *arg);
 
+/* === utils_generic === */
+int				ft_atoi(const char *str);
+unsigned long	ft_clock(unsigned long t_start);
+void			ft_wait(int	t);
+void			ft_print(t_philo *p, char *msg);
+
+/* === utils_init === */
+int		init(t_data *data, char **arr);
+void	cleanup(t_data *data);
+void	ft_create(t_data *data);
+
+/* === utils_life === */
+void	eat(t_philo	*p);
+void	ft_sleep(t_philo *p);
+void	think(t_philo *p);
 #endif

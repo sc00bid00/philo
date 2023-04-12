@@ -5,94 +5,74 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/11 09:23:07 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 16:47:53 by lsordo           ###   ########.fr       */
+/*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
+/*   Updated: 2023/04/12 19:05:58 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-void	ft_wait(useconds_t	t)
+void	check_guys(t_data *d)
 {
-	while ((double)t * 2  > 1)
+	int				i;
+	unsigned long	t;
+
+	i = 0;
+	while (i < d->n_phi)
 	{
-		usleep(500);
-		t -= (double)(500 / 1000);
+		pthread_mutex_lock(&d->lock);
+		t = d->philo[i].t_last;
+		pthread_mutex_unlock(&d->lock);
+		if (ft_clock(d->t_start) - t > d->t_die)
+		{
+			ft_print(&d->philo[i], "died");
+			pthread_mutex_lock(&d->lock);
+			d->philo[i].alive = 0;
+			d->stop = 1;
+			pthread_mutex_unlock(&d->lock);
+			break ;
+		}
+		i++;
 	}
-	usleep(t);
 }
 
-useconds_t	putmsg(int id, char *msg)
+void	*function(void *arg)
 {
-	struct timeval	ti;
-	useconds_t		t;
+	t_philo	*phi;
+	int		chk;
 
-	gettimeofday(&ti, NULL);
-	t = 1000 * ti.tv_sec + ti.tv_usec / 1000;
-	ft_putnbr_fd(t, 1);
-	ft_putchar_fd(' ', 1);
-	ft_putnbr_fd(id, 1);
-	ft_putstr_fd(" is ", 1);
-	ft_putendl_fd(msg, 1);
-	return (t);
-}
-
-void	*routine(void *p)
-{
-	t_philo		*philo;
-	useconds_t	t;
-
-
-	philo = (t_philo *)p;
-	if (philo->doing & EATING)
+	phi = (t_philo *)arg;
+	while (1)
 	{
-		if (!pthread_mutex_lock(philo->data->forks[philo->lfork]))
-			putmsg(philo->id, "took a fork");
-		if (!pthread_mutex_lock(philo->data->forks[philo->rfork]))
-			t = putmsg(philo->id, "took a fork");
-		philo->lapsed_lunch = t;
-		putmsg(philo->id, "eating");
-		ft_wait(philo->data->t_eat);
-		pthread_mutex_unlock(philo->data->forks[philo->rfork]);
-		pthread_mutex_unlock(philo->data->forks[philo->lfork]);
-		philo->doing = philo->doing<< 1;
-	}
-	else if (philo->doing & SLEEPING)
-	{
-		putmsg(philo->id, "sleeping");
-		ft_wait(philo->data->t_sleep);
-		philo->doing = philo->doing<< 1;
-	}
-	else if (philo->doing & THINKING)
-	{
-		putmsg(philo->id, "thinking");
-		philo->doing = philo->doing<< 1;
+		pthread_mutex_lock(&phi->data->lock);
+		chk = phi->data->stop;
+		pthread_mutex_unlock(&phi->data->lock);
+		if (chk)
+			return(NULL);
+		eat(phi);
+		ft_sleep(phi);
+		think(phi);
 	}
 	return (NULL);
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	*data;
-	int		i;
+	t_data	data;
 
-	data = malloc(sizeof(t_data));
-	if (argc > 7 || argc < 6)
-	{
-		printf("Wrong arguments - usage:\nnumber_of_philosophers\n\
-time_to_die   [ms]\ntime_to_eat   [ms]\ntime_to_sleep [ms]\n\
-[number_of_times_each_philosopher_must_eat]\n");
-		return (1);
-	}
-	data_init(data, argv);
-	mutex_init(data);
-	i = 0;
-	while (i < data->n_philo)
-	{
-		pthread_create((void *)&data->philo[i]->thread, NULL, &routine, (void *)data->philo[i]);
-		i++;
-	}
-	mutex_destroy(data);
-	data_cleanup(data);
+	if (argc < 5 || argc > 6)
+		return (ERR_ARGS);
+	if (init(&data, argv))
+		return (ERR_ARGS);
+	data.thread = malloc(data.n_phi * sizeof(pthread_t));
+	if (!data.thread)
+		return (EXIT_FAILURE);
+	data.philo = malloc(data.n_phi * sizeof(t_philo));
+	if (!data.philo)
+		return (EXIT_FAILURE);
+	ft_create(&data);
+	while (!data.stop)
+		check_guys(&data);
+	cleanup(&data);
 	return (0);
 }

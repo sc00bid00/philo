@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_put.c                                        :+:      :+:    :+:   */
+/*   utils_generic.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/11 10:08:23 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/11 10:26:00 by lsordo           ###   ########.fr       */
+/*   Created: 2023/04/12 14:19:35 by lsordo            #+#    #+#             */
+/*   Updated: 2023/04/12 19:51:30 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-int	ft_atoi(const char *str)
+int		ft_atoi(const char *str)
 {
 	int	num;
 	int	sign;
@@ -39,44 +39,37 @@ int	ft_atoi(const char *str)
 	return (sign * num);
 }
 
-void	ft_putstr_fd(char *s, int fd)
+unsigned long	ft_clock(unsigned long t_start)
 {
-	if (s)
-		while (*s)
-			write (fd, &*s++, 1);
+	struct timeval	ti;
+	int				t;
+
+	gettimeofday(&ti, NULL);
+	t = ti.tv_sec * 1000 + ti.tv_usec / 1000;
+	return (t - t_start);
 }
 
-void	ft_putchar_fd(char c, int fd)
+void	ft_wait(int t)
 {
-	write(fd, &c, 1);
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	if (!s)
-		;
-	else
-		ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
-}
-
-void	ft_putnbr_fd(int n, int fd)
-{
-	if (n < 0)
+	t = t * 1000;
+	while (t > T_SLOT)
 	{
-		ft_putchar_fd('-', fd);
-		if (n == -2147483648)
-		{
-			ft_putchar_fd('2', fd);
-			n = 147483648;
-		}
-		else
-			n = -n;
+		usleep(T_SLOT);
+		t -= T_SLOT;
 	}
-	if (n >= 10)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		n %= 10;
-	}
-	ft_putchar_fd(n + '0', fd);
+	if (t > 0)
+		usleep(t);
+}
+
+void	ft_print(t_philo *p, char *msg)
+{
+	int	var;
+
+	pthread_mutex_lock(&p->data->p_lock);
+	pthread_mutex_lock(&p->data->lock);
+	var = p->data->stop;
+	pthread_mutex_unlock(&p->data->lock);
+	if (!var)
+		printf("%lu %d %s\n", ft_clock(p->data->t_start), p->id, msg);
+	pthread_mutex_unlock(&p->data->p_lock);
 }
