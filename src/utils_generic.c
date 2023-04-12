@@ -6,13 +6,13 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:19:35 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 19:51:30 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/12 20:12:25 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-int		ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int	num;
 	int	sign;

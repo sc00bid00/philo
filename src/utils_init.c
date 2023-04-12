@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 19:19:31 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/12 20:13:57 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,20 @@ int	safety_chk(t_data *d)
 	return (0);
 }
 
-int	init(t_data *data, char **arr)
+void	init_help(t_data *data, char **arr)
 {
-	int	i;
-
 	(*data).stop = 0;
 	(*data).n_phi = ft_atoi(arr[1]);
 	(*data).t_die = ft_atoi(arr[2]);
 	(*data).t_eat = ft_atoi(arr[3]);
 	(*data).t_slp = ft_atoi(arr[4]);
+}
+
+int	init(t_data *data, char **arr)
+{
+	int	i;
+
+	init_help(data, arr);
 	if (safety_chk(data))
 		return (ERR_ARGS);
 	if (arr && arr[5])

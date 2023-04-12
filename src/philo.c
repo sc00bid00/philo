@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 19:05:58 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/12 20:12:13 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	*function(void *arg)
 		chk = phi->data->stop;
 		pthread_mutex_unlock(&phi->data->lock);
 		if (chk)
-			return(NULL);
+			return (NULL);
 		eat(phi);
 		ft_sleep(phi);
 		think(phi);
