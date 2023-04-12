@@ -6,7 +6,7 @@
 #    By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 09:33:51 by lsordo            #+#    #+#              #
-#    Updated: 2023/04/11 10:23:28 by lsordo           ###   ########.fr        #
+#    Updated: 2023/04/12 17:01:47 by lsordo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,10 +33,9 @@ OBJ_DIR =	./obj/
 INC_DIR =	-I ./inc
 
 SRC =		philo.c \
-			utils_mem.c \
-			utils_put.c \
-			utils_tmp.c
-
+			utils_generic.c \
+			utils_init.c \
+			utils_life.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 
