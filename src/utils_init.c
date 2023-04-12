@@ -6,13 +6,27 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 17:53:42 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/12 19:19:31 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-void	init(t_data *data, char **arr)
+int	safety_chk(t_data *d)
+{
+	if (!d->n_phi || !d->t_die || !d->t_eat || !d->t_slp)
+		return (ERR_ARGS);
+	if (d->n_phi == 1)
+	{
+		printf("%d\t1\thas taken a fork\n", 0);
+		ft_wait(d->t_die);
+		printf("%lu\t1\tdied\n", d->t_die);
+		return (ERR_SOLITARY);
+	}
+	return (0);
+}
+
+int	init(t_data *data, char **arr)
 {
 	int	i;
 
@@ -21,8 +35,14 @@ void	init(t_data *data, char **arr)
 	(*data).t_die = ft_atoi(arr[2]);
 	(*data).t_eat = ft_atoi(arr[3]);
 	(*data).t_slp = ft_atoi(arr[4]);
+	if (safety_chk(data))
+		return (ERR_ARGS);
 	if (arr && arr[5])
+	{
 		(*data).n_lun = ft_atoi(arr[5]);
+		if (!data->n_lun)
+			return (ERR_ARGS);
+	}
 	data->forks = malloc(data->n_phi * sizeof(pthread_mutex_t));
 	if (!data->forks)
 		exit(EXIT_FAILURE);
@@ -33,6 +53,7 @@ void	init(t_data *data, char **arr)
 		i++;
 	}
 	pthread_mutex_init(&(*data).lock, NULL);
+	return (0);
 }
 
 void	cleanup(t_data *data)
