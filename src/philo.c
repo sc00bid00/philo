@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 20:12:13 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 15:02:07 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,48 @@
 void	check_guys(t_data *d)
 {
 	int				i;
+	int				all_finished;
+	int				finished;
 	unsigned long	t;
 
 	i = 0;
+	all_finished = 1;
 	while (i < d->n_phi)
 	{
 		pthread_mutex_lock(&d->lock);
-		t = d->philo[i].t_last;
+		finished = d->philo[i].finished;
 		pthread_mutex_unlock(&d->lock);
-		if (ft_clock(d->t_start) - t > d->t_die)
+		if (!finished)
 		{
-			ft_print(&d->philo[i], "died");
-			pthread_mutex_lock(&d->lock);
-			d->philo[i].alive = 0;
-			d->stop = 1;
-			pthread_mutex_unlock(&d->lock);
+			all_finished = 0;
 			break ;
 		}
 		i++;
+	}
+	if (all_finished)
+	{
+		pthread_mutex_lock(&d->lock);
+		d->stop = 1;
+		pthread_mutex_unlock(&d->lock);
+	}
+	else
+	{
+		i = 0;
+		while (i < d->n_phi)
+		{
+			pthread_mutex_lock(&d->lock);
+			t = d->philo[i].t_last;
+			pthread_mutex_unlock(&d->lock);
+			if (ft_clock(d->t_start) - t > d->t_die && !all_finished)
+			{
+				ft_print(&d->philo[i], "died");
+				pthread_mutex_lock(&d->lock);
+				d->stop = 1;
+				pthread_mutex_unlock(&d->lock);
+				break ;
+			}
+			i++;
+		}
 	}
 }
 
@@ -59,17 +83,19 @@ void	*function(void *arg)
 int	main(int argc, char **argv)
 {
 	t_data	data;
+	int		ret;
 
 	if (argc < 5 || argc > 6)
 		return (ERR_ARGS);
-	if (init(&data, argv))
-		return (ERR_ARGS);
+	ret = init(&data, argv);
+	if (ret)
+		return (ret);
 	data.thread = malloc(data.n_phi * sizeof(pthread_t));
 	if (!data.thread)
-		return (EXIT_FAILURE);
+		return (ERR_ALLOCATION);
 	data.philo = malloc(data.n_phi * sizeof(t_philo));
 	if (!data.philo)
-		return (EXIT_FAILURE);
+		return (ERR_ALLOCATION);
 	ft_create(&data);
 	while (!data.stop)
 		check_guys(&data);

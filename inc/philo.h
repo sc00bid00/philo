@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 11:54:27 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 14:50:09 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 
 # define ERR_ARGS 1
 # define ERR_SOLITARY 2
+# define ERR_ALLOCATION 3
 
 # define T_SLOT 100
+# define T_THINK 100
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -51,8 +53,9 @@ typedef struct s_philo
 	unsigned long	t_eat;
 	unsigned long	t_slp;
 	unsigned long	t_last;
+	int				lunches;
+	int				finished;
 	int				n_lun;
-	int				alive;
 	t_data			*data;
 }					t_philo;
 

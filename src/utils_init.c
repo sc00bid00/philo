@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 20:13:57 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 14:50:00 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ void	init_help(t_data *data, char **arr)
 int	init(t_data *data, char **arr)
 {
 	int	i;
+	int ret;
 
 	init_help(data, arr);
-	if (safety_chk(data))
-		return (ERR_ARGS);
+	ret = safety_chk(data);
+	if (ret)
+		return (ret);
 	if (arr && arr[5])
 	{
 		(*data).n_lun = ft_atoi(arr[5]);
@@ -92,8 +94,9 @@ void	ft_create(t_data *data)
 	while (i < data->n_phi)
 	{
 		data->philo[i].data = data;
-		data->philo[i].alive = 1;
 		data->philo[i].t_last = 0;
+		data->philo[i].lunches = 0;
+		data->philo[i].finished = 0;
 		data->philo[i].id = i + 1;
 		data->philo[i].lf = i;
 		if (i + 1 < data->n_phi)
