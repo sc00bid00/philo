@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 14:50:00 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 17:31:33 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	init(t_data *data, char **arr)
 		if (!data->n_lun)
 			return (ERR_ARGS);
 	}
+	else if (!arr[5])
+		(*data).n_lun = 0;
 	data->forks = malloc(data->n_phi * sizeof(pthread_mutex_t));
 	if (!data->forks)
 		exit(EXIT_FAILURE);
@@ -60,6 +62,7 @@ int	init(t_data *data, char **arr)
 		i++;
 	}
 	pthread_mutex_init(&(*data).lock, NULL);
+	pthread_mutex_init(&(*data).p_lock, NULL);
 	return (0);
 }
 
@@ -80,6 +83,7 @@ void	cleanup(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(&data->lock);
+	pthread_mutex_destroy(&data->p_lock);
 	free(data->thread);
 	free(data->philo);
 	free(data->forks);
