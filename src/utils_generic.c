@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:19:35 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 20:12:25 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 11:51:50 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,13 @@ unsigned long	ft_clock(unsigned long t_start)
 	return (t - t_start);
 }
 
-void	ft_wait(int t)
+void	ft_wait(unsigned long t)
 {
-	t = t * 1000;
-	while (t > T_SLOT)
-	{
+	unsigned long now;
+
+	now = ft_clock(0);
+	while (ft_clock(0) - now < t)
 		usleep(T_SLOT);
-		t -= T_SLOT;
-	}
-	if (t > 0)
-		usleep(t);
 }
 
 void	ft_print(t_philo *p, char *msg)

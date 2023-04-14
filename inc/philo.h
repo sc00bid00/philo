@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/12 19:26:58 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 11:54:27 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define ERR_ARGS 1
 # define ERR_SOLITARY 2
 
-# define T_SLOT 50000
+# define T_SLOT 100
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -61,7 +61,7 @@ void	*function(void *arg);
 /* === utils_generic === */
 int				ft_atoi(const char *str);
 unsigned long	ft_clock(unsigned long t_start);
-void			ft_wait(int	t);
+void			ft_wait(unsigned long t);
 void			ft_print(t_philo *p, char *msg);
 
 /* === utils_init === */

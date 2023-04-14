@@ -6,13 +6,13 @@
 #    By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 09:33:51 by lsordo            #+#    #+#              #
-#    Updated: 2023/04/12 18:16:38 by lsordo           ###   ########.fr        #
+#    Updated: 2023/04/14 10:24:33 by lsordo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 UNAME = $(shell uname)
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -pthread
+CFLAGS = -Wall -Wextra -Werror -g -pthread -MMD
 
 #COLORS-----------------------------------------------------------------------#
 BRED	=	\033[1;31m
@@ -38,14 +38,18 @@ SRC =		philo.c \
 			utils_life.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
+DEP = $(SRC:%.c=$(OBJ_DIR)%.d)
 
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ)
 	@echo "$(COLOR_MAKE)Make philo...$(DEFCL)"
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+
+-include $(DEP)
+
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@$(CC) $(CFLAGS) $(INC_DIR) -c $^ -o $@
+	@$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 $(OBJ_DIR):
 	@mkdir -p ./obj
