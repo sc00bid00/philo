@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 17:31:33 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:27:00 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	safety_chk(t_data *d)
 	{
 		printf("%d\t1\thas taken a fork\n", 0);
 		ft_wait(d->t_die);
-		printf("%lu\t1\tdied\n", d->t_die);
+		printf("%d\t1\tdied\n", d->t_die);
 		return (ERR_SOLITARY);
 	}
 	return (0);
@@ -35,10 +35,16 @@ void	init_help(t_data *data, char **arr)
 	(*data).t_slp = ft_atoi(arr[4]);
 }
 
+void	init_help2(t_data *data)
+{
+	pthread_mutex_init(&(*data).lock, NULL);
+	pthread_mutex_init(&(*data).p_lock, NULL);
+}
+
 int	init(t_data *data, char **arr)
 {
 	int	i;
-	int ret;
+	int	ret;
 
 	init_help(data, arr);
 	ret = safety_chk(data);
@@ -52,17 +58,14 @@ int	init(t_data *data, char **arr)
 	}
 	else if (!arr[5])
 		(*data).n_lun = 0;
-	data->forks = malloc(data->n_phi * sizeof(pthread_mutex_t));
-	if (!data->forks)
-		exit(EXIT_FAILURE);
+	allocforks(data);
+	init_help2(data);
 	i = 0;
 	while (i < data->n_phi)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
-	pthread_mutex_init(&(*data).lock, NULL);
-	pthread_mutex_init(&(*data).p_lock, NULL);
 	return (0);
 }
 
@@ -87,30 +90,4 @@ void	cleanup(t_data *data)
 	free(data->thread);
 	free(data->philo);
 	free(data->forks);
-}
-
-void	ft_create(t_data *data)
-{
-	int	i;
-
-	data->t_start = ft_clock(0);
-	i = 0;
-	while (i < data->n_phi)
-	{
-		data->philo[i].data = data;
-		data->philo[i].t_last = 0;
-		data->philo[i].lunches = 0;
-		data->philo[i].finished = 0;
-		data->philo[i].id = i + 1;
-		data->philo[i].lf = i;
-		if (i + 1 < data->n_phi)
-			data->philo[i].rf = i + 1;
-		else
-			data->philo[i].rf = 0;
-		data->philo[i].t_die = data->t_die;
-		data->philo[i].t_eat = data->t_eat;
-		data->philo[i].t_slp = data->t_slp;
-		pthread_create(&data->thread[i], NULL, function, &data->philo[i]);
-		i++;
-	}
 }

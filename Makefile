@@ -6,7 +6,7 @@
 #    By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 09:33:51 by lsordo            #+#    #+#              #
-#    Updated: 2023/04/14 10:24:33 by lsordo           ###   ########.fr        #
+#    Updated: 2023/04/14 20:11:53 by lsordo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ INC_DIR =	-I ./inc
 SRC =		philo.c \
 			utils_generic.c \
 			utils_init.c \
-			utils_life.c
+			utils_life.c \
+			utils_thread.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 DEP = $(SRC:%.c=$(OBJ_DIR)%.d)

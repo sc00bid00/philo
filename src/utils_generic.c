@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:19:35 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 11:51:50 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:04:25 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_atoi(const char *str)
 	return (sign * num);
 }
 
-unsigned long	ft_clock(unsigned long t_start)
+int	ft_clock(int t_start)
 {
 	struct timeval	ti;
 	int				t;
@@ -49,9 +49,9 @@ unsigned long	ft_clock(unsigned long t_start)
 	return (t - t_start);
 }
 
-void	ft_wait(unsigned long t)
+void	ft_wait(int t)
 {
-	unsigned long now;
+	int	now;
 
 	now = ft_clock(0);
 	while (ft_clock(0) - now < t)
@@ -67,6 +67,6 @@ void	ft_print(t_philo *p, char *msg)
 	var = p->data->stop;
 	pthread_mutex_unlock(&p->data->lock);
 	if (!var)
-		printf("%lu %d %s\n", ft_clock(p->data->t_start), p->id, msg);
+		printf("%d %d %s\n", ft_clock(p->data->t_start), p->id, msg);
 	pthread_mutex_unlock(&p->data->p_lock);
 }

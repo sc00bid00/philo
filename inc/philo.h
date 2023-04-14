@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 14:50:09 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:27:16 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 # include <pthread.h>
 # include <philo.h>
 
-typedef struct	s_data
+typedef struct s_data
 {
 	int				n_phi;
-	unsigned long	t_die;
-	unsigned long	t_eat;
-	unsigned long	t_slp;
-	unsigned long	t_start;
+	int				t_die;
+	int				t_eat;
+	int				t_slp;
+	int				t_start;
 	int				n_lun;
 	int				stop;
 	pthread_mutex_t	p_lock;
@@ -46,31 +46,33 @@ typedef struct	s_data
 
 typedef struct s_philo
 {
-	int				id;
-	int				lf;
-	int				rf;
-	unsigned long	t_die;
-	unsigned long	t_eat;
-	unsigned long	t_slp;
-	unsigned long	t_last;
-	int				lunches;
-	int				finished;
-	int				n_lun;
-	t_data			*data;
-}					t_philo;
+	int		id;
+	int		lf;
+	int		rf;
+	int		t_die;
+	int		t_eat;
+	int		t_slp;
+	int		t_last;
+	int		lunches;
+	int		finished;
+	int		n_lun;
+	t_data	*data;
+}			t_philo;
 
 void	*function(void *arg);
 
 /* === utils_generic === */
-int				ft_atoi(const char *str);
-unsigned long	ft_clock(unsigned long t_start);
-void			ft_wait(unsigned long t);
-void			ft_print(t_philo *p, char *msg);
+int		ft_atoi(const char *str);
+int		ft_clock(int t_start);
+void	ft_wait(int t);
+void	ft_print(t_philo *p, char *msg);
 
 /* === utils_init === */
 int		init(t_data *data, char **arr);
 void	cleanup(t_data *data);
 void	ft_create(t_data *data);
+void	ft_launch(t_data *d);
+void	allocforks(t_data *data);
 
 /* === utils_life === */
 void	eat(t_philo	*p);
