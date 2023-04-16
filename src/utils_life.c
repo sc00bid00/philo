@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:59:53 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 20:18:36 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/16 09:35:10 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	eat(t_philo	*p)
 	p->t_last = ft_clock(p->data->t_start);
 	p->lunches++;
 	pthread_mutex_unlock(&p->data->lock);
-	if (p->lunches >= p->data->n_lun && p->data->n_lun)
+	if (p->lunches > p->data->n_lun && p->data->n_lun)
 	{
 		pthread_mutex_lock(&p->data->lock);
 		p->finished = 1;
