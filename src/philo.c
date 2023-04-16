@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/16 12:45:34 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/16 13:03:05 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	*function(void *arg)
 	while (1)
 	{
 		if (phi->id % phi->data->n_phi && phi->lunches == 0)
-			ft_wait(2);
+			ft_wait(1);
 		pthread_mutex_lock(&phi->data->lock);
 		chk = phi->data->stop;
 		pthread_mutex_unlock(&phi->data->lock);
