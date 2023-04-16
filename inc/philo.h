@@ -6,16 +6,19 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 20:27:16 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/16 15:07:01 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# define ERR_ARGS 1
-# define ERR_SOLITARY 2
-# define ERR_ALLOCATION 3
+# define ERR_ARGSNUM 1
+# define ERR_ARGSTYPE 2
+# define ERR_ARGNEG 3
+# define ERR_NOPHILS 4
+# define ERR_SOLITARY 5
+# define ERR_ALLOCATION 6
 
 # define T_SLOT 100
 # define T_THINK 100
@@ -63,6 +66,7 @@ void	*function(void *arg);
 
 /* === utils_generic === */
 int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
 int		ft_clock(int t_start);
 void	ft_wait(int t);
 void	ft_print(t_philo *p, char *msg);
@@ -78,4 +82,9 @@ void	allocforks(t_data *data);
 void	eat(t_philo	*p);
 void	ft_sleep(t_philo *p);
 void	think(t_philo *p);
+
+/* === utils_errormgt === */
+int		error_mgt(int argc, char **arr);
+void	err_msg(int err_num);
+
 #endif

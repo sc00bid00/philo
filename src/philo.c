@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/16 13:03:05 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/16 15:30:26 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,19 @@ int	main(int argc, char **argv)
 	t_data	data;
 	int		ret;
 
-	if (argc < 5 || argc > 6)
-		return (ERR_ARGS);
+	ret = 0;
+	ret = error_mgt(argc, argv);
+	if (ret)
+		return (err_msg(ret), ret);
 	ret = init(&data, argv);
 	if (ret)
-		return (ret);
+		return (err_msg(ret), ret);
 	data.thread = malloc(data.n_phi * sizeof(pthread_t));
 	if (!data.thread)
-		return (ERR_ALLOCATION);
+		return (err_msg(ERR_ALLOCATION), ERR_ALLOCATION);
 	data.philo = malloc(data.n_phi * sizeof(t_philo));
 	if (!data.philo)
-		return (ERR_ALLOCATION);
+		return (err_msg(ERR_ALLOCATION), ERR_ALLOCATION);
 	ft_create(&data);
 	ft_launch(&data);
 	while (!data.stop)

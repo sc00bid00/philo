@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/16 10:56:38 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/16 14:33:16 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	safety_chk(t_data *d)
 {
 	if (!d->n_phi || !d->t_die || !d->t_eat || !d->t_slp)
-		return (ERR_ARGS);
+		return (ERR_ARGSNUM);
 	if (d->n_phi == 1)
 	{
 		printf("%d 1 has taken a fork\n", 0);
@@ -54,7 +54,7 @@ int	init(t_data *data, char **arr)
 	{
 		(*data).n_lun = ft_atoi(arr[5]);
 		if (!data->n_lun)
-			return (ERR_ARGS);
+			return (ERR_ARGSNUM);
 	}
 	else if (!arr[5])
 		(*data).n_lun = 0;
