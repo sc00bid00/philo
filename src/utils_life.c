@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:59:53 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/16 09:35:10 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/16 10:39:09 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ void	eat(t_philo	*p)
 	}
 	ft_print(p, "is eating");
 	ft_wait(p->t_eat);
+}
+
+void	ft_sleep(t_philo *p)
+{
+	ft_print(p, "is sleeping");
 	if (p->id % 2)
 	{
 		pthread_mutex_unlock(&p->data->forks[p->lf]);
@@ -55,11 +60,6 @@ void	eat(t_philo	*p)
 		pthread_mutex_unlock(&p->data->forks[p->rf]);
 		pthread_mutex_unlock(&p->data->forks[p->lf]);
 	}
-}
-
-void	ft_sleep(t_philo *p)
-{
-	ft_print(p, "is sleeping");
 	ft_wait(p->t_slp);
 }
 
