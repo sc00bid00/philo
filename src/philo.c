@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 13:12:47 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 13:22:01 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	helpcheck_guys2(t_data *d, int all_finished)
 		pthread_mutex_lock(&d->lock);
 		t = d->philo[i].t_last;
 		pthread_mutex_unlock(&d->lock);
-		// if (ft_clock(d->t_start) - t >= d->t_die && !all_finished)
 		if (ft_clock(d->t_start) - t >= d->t_die)
 		{
 			ft_print(&d->philo[i], "died");
@@ -89,6 +88,7 @@ void	*function(void *arg)
 		eat(phi);
 		ft_sleep(phi);
 		think(phi);
+		}
 	}
 	return (NULL);
 }
