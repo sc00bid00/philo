@@ -6,7 +6,7 @@
 #    By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 09:33:51 by lsordo            #+#    #+#              #
-#    Updated: 2023/04/16 15:02:51 by lsordo           ###   ########.fr        #
+#    Updated: 2023/04/17 18:29:24 by lsordo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ OBJ_DIR =	./obj/
 INC_DIR =	-I ./inc
 
 SRC =		philo.c \
+			utils_check.c \
 			utils_errormgt.c \
 			utils_generic.c \
 			utils_init.c \

@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 14:49:56 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 18:29:50 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,8 @@ void	think(t_philo *p);
 /* === utils_errormgt === */
 int		error_mgt(int argc, char **arr);
 void	err_msg(int err_num);
+
+/* === utils_check === */
+void	check_guys(t_data *d);
 
 #endif

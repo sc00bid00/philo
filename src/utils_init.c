@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 14:39:45 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 18:25:10 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,20 @@ void	init_help(t_data *data, char **arr)
 
 void	init_help2(t_data *data)
 {
+	int	i;
+
 	pthread_mutex_init(&(*data).lock, NULL);
 	pthread_mutex_init(&(*data).p_lock, NULL);
+	i = 0;
+	while (i < data->n_phi)
+	{
+		pthread_mutex_init(&data->forks[i], NULL);
+		i++;
+	}
 }
 
 int	init(t_data *data, char **arr)
 {
-	int	i;
 	int	ret;
 
 	init_help(data, arr);
@@ -63,12 +70,6 @@ int	init(t_data *data, char **arr)
 	if (ret)
 		return (ret);
 	init_help2(data);
-	i = 0;
-	while (i < data->n_phi)
-	{
-		pthread_mutex_init(&data->forks[i], NULL);
-		i++;
-	}
 	return (0);
 }
 
