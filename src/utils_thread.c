@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 20:11:06 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/14 20:27:04 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 13:02:10 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ void	ft_launch(t_data *d)
 	}
 }
 
-void	allocforks(t_data *data)
+int	allocforks(t_data *data)
 {
 	data->forks = malloc(data->n_phi * sizeof(pthread_mutex_t));
 	if (!data->forks)
-		exit(EXIT_FAILURE);
+		return (ERR_ALLOCATION);
+	return (0);
 }

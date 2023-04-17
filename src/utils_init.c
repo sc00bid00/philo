@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/16 14:33:16 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 13:01:31 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ int	init(t_data *data, char **arr)
 	}
 	else if (!arr[5])
 		(*data).n_lun = 0;
-	allocforks(data);
+	ret = allocforks(data);
+	if (ret)
+		return (err_msg(ret), ret);
 	init_help2(data);
 	i = 0;
 	while (i < data->n_phi)

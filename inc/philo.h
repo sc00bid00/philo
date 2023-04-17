@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/16 15:07:01 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 13:02:24 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		init(t_data *data, char **arr);
 void	cleanup(t_data *data);
 void	ft_create(t_data *data);
 void	ft_launch(t_data *d);
-void	allocforks(t_data *data);
+int		allocforks(t_data *data);
 
 /* === utils_life === */
 void	eat(t_philo	*p);
