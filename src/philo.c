@@ -6,11 +6,20 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 18:27:33 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 20:42:38 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
+void	help_function(t_philo *phi, int *chk1, int *chk2, int *n)
+{
+	pthread_mutex_lock(&phi->data->lock);
+	*chk1 = phi->data->stop;
+	*chk2 = phi->data->done;
+	*n = phi->data->n_phi;
+	pthread_mutex_unlock(&phi->data->lock);
+}
 
 void	*function(void *arg)
 {
@@ -22,11 +31,7 @@ void	*function(void *arg)
 	phi = (t_philo *)arg;
 	while (1)
 	{
-		pthread_mutex_lock(&phi->data->lock);
-		chk1 = phi->data->stop;
-		chk2 = phi->data->done;
-		n = phi->data->n_phi;
-		pthread_mutex_unlock(&phi->data->lock);
+		help_function(phi, &chk1, &chk2, &n);
 		if (!(n % 2) && phi->id % 2 && phi->lunches == 0)
 			ft_wait(1);
 		else if ((n % 2) && phi->id % n && phi->lunches == 0)
