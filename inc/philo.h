@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 13:02:24 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/17 14:49:56 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	int				t_start;
 	int				n_lun;
 	int				stop;
+	int				done;
 	pthread_mutex_t	p_lock;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	*forks;
