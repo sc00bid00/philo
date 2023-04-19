@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 20:42:38 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/19 12:57:13 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	*function(void *arg)
 	while (1)
 	{
 		help_function(phi, &chk1, &chk2, &n);
-		if (!(n % 2) && phi->id % 2 && phi->lunches == 0)
+		if (!(n % 2) && !(phi->id % 2) && phi->lunches == 0)
 			ft_wait(1);
-		else if ((n % 2) && phi->id % n && phi->lunches == 0)
+		if ((n % 2) && !(phi->id % 3) && phi->lunches == 0)
 			ft_wait(1);
 		if (chk1)
 			return (NULL);
@@ -43,9 +43,9 @@ void	*function(void *arg)
 			ft_wait(phi->t_die);
 			return (NULL);
 		}
+		think(phi);
 		eat(phi);
 		ft_sleep(phi);
-		think(phi);
 	}
 	return (NULL);
 }
