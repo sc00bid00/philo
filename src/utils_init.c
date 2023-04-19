@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:54:31 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/17 18:25:10 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/19 16:22:39 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	init(t_data *data, char **arr)
 	if (arr && arr[5])
 	{
 		(*data).n_lun = ft_atoi(arr[5]);
-		if (!data->n_lun)
-			return (ERR_ARGSNUM);
+		if (data->n_lun < 0)
+			return (ERR_ARGSTYPE);
 	}
 	else if (!arr[5])
 		(*data).n_lun = 0;

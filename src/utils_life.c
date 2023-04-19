@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:59:53 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/19 12:45:52 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/19 16:13:47 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,12 @@ void	ft_sleep(t_philo *p)
 	ft_wait(p->t_slp);
 }
 
-void	think(t_philo *p)
+void	think(t_philo *phi)
 {
-	usleep(T_THINK);
-	ft_print(p, "is thinking");
+	if (phi->id % 2)
+		ft_wait(1);
+	else
+		ft_wait(6);
+	if (phi->lunches > 0)
+		ft_print(phi, "is thinking");
 }

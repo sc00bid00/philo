@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:16:20 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/19 14:48:07 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/19 16:06:41 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ void	*function(void *arg)
 	phi = (t_philo *)arg;
 	while (1)
 	{
-		pthread_mutex_lock(&phi->data->lock);
-		n = phi->data->n_phi;
-		pthread_mutex_unlock(&phi->data->lock);
 		help_function(phi, &chk1, &chk2, &n);
+		if (!(phi->id % 2) && !phi->lunches)
+			ft_wait(phi->t_eat);
+		if (n % 2 && phi->id == n && !phi->lunches)
+			ft_wait(phi->t_eat);
 		if (chk1)
 			return (NULL);
 		if (chk2)
@@ -42,9 +43,9 @@ void	*function(void *arg)
 			ft_wait(phi->t_die);
 			return (NULL);
 		}
+		think(phi);
 		eat(phi);
 		ft_sleep(phi);
-		think(phi);
 	}
 	return (NULL);
 }

@@ -6,13 +6,13 @@
 #    By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 09:33:51 by lsordo            #+#    #+#              #
-#    Updated: 2023/04/17 18:29:24 by lsordo           ###   ########.fr        #
+#    Updated: 2023/04/19 16:23:14 by lsordo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 UNAME = $(shell uname)
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -pthread -MMD
+CFLAGS = -Wall -Wextra -Werror -pthread -MMD
 
 #COLORS-----------------------------------------------------------------------#
 BRED	=	\033[1;31m
