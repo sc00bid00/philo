@@ -6,7 +6,7 @@
 /*   By: lsordo <lsordo@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:23:55 by lsordo            #+#    #+#             */
-/*   Updated: 2023/04/19 10:53:14 by lsordo           ###   ########.fr       */
+/*   Updated: 2023/04/19 16:29:33 by lsordo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # define ERR_ALLOCATION 6
 
 # define T_SLOT 100
-# define T_THINK 200
 
 # include <stdio.h>
 # include <stdlib.h>
